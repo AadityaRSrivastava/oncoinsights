@@ -15,6 +15,9 @@ from __future__ import annotations
 import sqlite3
 from pathlib import Path
 
+import matplotlib
+matplotlib.use("Agg")  # headless server: avoid GUI backend init crashes from lifelines' matplotlib import
+
 import pandas as pd
 import plotly.express as px
 import streamlit as st
