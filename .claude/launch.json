@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "oncoinsights-dashboard",
+      "runtimeExecutable": "C:\\Python314\\python.exe",
+      "runtimeArgs": ["-m", "streamlit", "run", "dashboard/app.py", "--server.port", "8501", "--server.headless", "true"],
+      "port": 8501
+    }
+  ]
+}

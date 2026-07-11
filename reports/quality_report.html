@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>OncoInsights Quality Report</title>
+<style>
+body { font-family: -apple-system, Segoe UI, sans-serif; max-width: 800px; margin: 2rem auto; line-height: 1.5; }
+h1 { font-size: 1.4rem; }
+table { border-collapse: collapse; margin-top: 1rem; }
+td, th { border: 1px solid #ccc; padding: 4px 10px; text-align: left; }
+</style></head>
+<body>
+<h1>OncoInsights — Data Quality Report</h1>
+<p>Generated 2026-07-11T12:55:54</p>
+<h2>Cleaning steps applied</h2>
+<ol><li>Removed 0 duplicate patientId row(s).</li><li>Dropped 52 patient(s) with no clinical follow-up data at all (all of AGE/SEX/stage/OS_MONTHS/OS_STATUS missing).</li><li>Median-imputed 19 missing AGE value(s) with median=66.</li><li>Dropped 2 row(s) missing AJCC_PATHOLOGIC_TUMOR_STAGE (required for stratification).</li><li>Dropped 9 row(s) missing OS_MONTHS (required for survival analysis).</li><li>Flagged 1 AGE outlier(s) (>3 SD from mean) - kept, not dropped.</li><li>clean_clinical: 566 raw rows -> 503 clean rows.</li><li>Restricted expression matrix to 499 samples with clean clinical records.</li><li>Dropped 0 near-zero-variance gene(s) (log2 variance < 0.01): []</li><li>clean_expression: 40 raw genes -> 40 clean genes, 499 samples.</li></ol>
+<h2>Final dataset shape</h2>
+<table>
+<tr><th>Table</th><th>Rows</th><th>Columns</th></tr>
+<tr><td>clean_clinical.csv</td><td>503</td><td>61</td></tr>
+<tr><td>clean_expression.csv</td><td>40 genes</td><td>499 samples</td></tr>
+</table>
+</body></html>

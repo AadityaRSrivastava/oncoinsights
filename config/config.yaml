@@ -1,0 +1,111 @@
+# OncoInsights pipeline configuration
+# All file paths, thresholds, and gene lists live here — no hardcoded paths in src/.
+
+project:
+  name: OncoInsights
+  cohort: TCGA-LUAD (luad_tcga_pan_can_atlas_2018, cBioPortal PanCancer Atlas)
+
+paths:
+  raw_dir: data/raw
+  processed_dir: data/processed
+  reports_dir: reports
+  figures_dir: figures
+  sql_dir: sql
+  log_file: data/acquisition_log.txt
+
+  raw_files:
+    clinical: data/raw/clinical.csv
+    mutations: data/raw/mutations.csv
+    expression: data/raw/expression_matrix.csv
+    samples: data/raw/samples.csv
+
+  processed_files:
+    clean_clinical: data/processed/clean_clinical.csv
+    clean_expression: data/processed/clean_expression.csv
+    features: data/processed/features.csv
+    quality_report: reports/quality_report.html
+    sqlite_db: data/processed/oncoinsights.db
+
+# 40-gene curated LUAD driver panel pulled from cBioPortal.
+# Chosen as clinically significant/well-characterized LUAD genes (TCGA LUAD
+# marker paper + COSMIC Cancer Gene Census), not a whole-transcriptome pull,
+# so every chart maps back to a gene with a defensible biological story.
+gene_panel:
+  - EGFR
+  - KRAS
+  - TP53
+  - STK11
+  - KEAP1
+  - ALK
+  - ROS1
+  - MET
+  - BRAF
+  - ERBB2
+  - PIK3CA
+  - NF1
+  - RB1
+  - CDKN2A
+  - MYC
+  - PTEN
+  - SMARCA4
+  - ATM
+  - ARID1A
+  - SETD2
+  - RBM10
+  - U2AF1
+  - CTNNB1
+  - NOTCH1
+  - FAT1
+  - APC
+  - SMAD4
+  - PDGFRA
+  - KIT
+  - FGFR1
+  - NKX2-1
+  - TERT
+  - CDK4
+  - MDM2
+  - LRP1B
+  - MGA
+  - COL11A1
+  - SPTA1
+  - XIRP2
+  - ZFHX4
+
+# Genes of primary analytic interest — used for expression-quartile features,
+# boxplots, and headline dashboard charts. EGFR and KRAS are the two most
+# clinically actionable LUAD driver genes (targeted therapy relevance).
+genes_of_interest:
+  - EGFR
+  - KRAS
+
+validation:
+  min_expected_samples: 400
+  max_missing_fraction_clinical: 0.30  # flag (not fail) columns above this
+  required_clinical_columns:
+    - patientId
+    - sampleId
+    - AGE
+    - SEX
+    - AJCC_PATHOLOGIC_TUMOR_STAGE
+    - OS_MONTHS
+    - OS_STATUS
+    - MUTATION_COUNT
+
+cleaning:
+  near_zero_variance_threshold: 0.01  # drop genes with variance below this
+  age_missing_strategy: median_impute
+  stage_missing_strategy: drop_row      # stage is required for stratified analysis
+  survival_missing_strategy: drop_row   # OS_MONTHS/OS_STATUS required for KM/log-rank
+
+features:
+  age_bucket_edges: [0, 50, 60, 70, 100]
+  age_bucket_labels: ["<50", "50-59", "60-69", "70+"]
+  risk_score:
+    # RiskScore = 0.4*z(mutation_count) + 0.3*z(age) + 0.3*stage_weight
+    # stage_weight maps AJCC stage group to an ordinal 0-1 scale (I/II/III/IV).
+    weights:
+      mutation_count: 0.4
+      age: 0.3
+      stage: 0.3
+  high_risk_threshold_percentile: 0.75  # top quartile of risk score flagged high-risk

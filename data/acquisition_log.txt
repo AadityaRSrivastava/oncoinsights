@@ -1,0 +1,47 @@
+OncoInsights acquisition/validation log - 2026-07-11T12:55:54
+Cohort: TCGA-LUAD (luad_tcga_pan_can_atlas_2018, cBioPortal PanCancer Atlas)
+
+[clinical.csv] shape = (566, 59)
+  Schema OK: all 8 required columns present.
+  Row count OK: 566 samples.
+  Duplicate patientId rows: 0
+  Missing-value summary (top 15 columns by null fraction):
+    DFS_MONTHS                           46.8% <-- FLAGGED (>30% missing)
+    DFS_STATUS                           46.3% <-- FLAGGED (>30% missing)
+    ETHNICITY                            31.1% <-- FLAGGED (>30% missing)
+    DAYS_LAST_FOLLOWUP                   30.7% <-- FLAGGED (>30% missing)
+    PERSON_NEOPLASM_CANCER_STATUS        25.6%
+    NEW_TUMOR_EVENT_AFTER_INITIAL_TREATMENT  20.7%
+    RACE                                 20.7%
+    RADIATION_THERAPY                    17.5%
+    DSS_STATUS                           15.5%
+    DAYS_TO_BIRTH                        14.7%
+    AJCC_STAGING_EDITION                 12.9%
+    AGE                                  12.5%
+    DAYS_TO_INITIAL_PATHOLOGIC_DIAGNOSIS  12.5%
+    FRACTION_GENOME_ALTERED              11.7%
+    ANEUPLOIDY_SCORE                     11.5%
+
+[mutations.csv] shape = (2817, 13)
+  Schema OK: all required columns present.
+  Distinct genes mutated: 40 (panel size: 40)
+  Rows with null proteinChange: 0
+  Mutation type breakdown:
+    Missense_Mutation         2092
+    Nonsense_Mutation         323
+    Frame_Shift_Del           146
+    Splice_Site               135
+    Frame_Shift_Ins           43
+    In_Frame_Del              38
+    Splice_Region             30
+    In_Frame_Ins              8
+    Translation_Start_Site    2
+
+[expression_matrix.csv] shape = (40, 511) (genes x samples)
+  Schema OK: all 40 panel genes present.
+  Missing expression values: 0 / 20400 (0.00%)
+  Value range: min=0.00, max=262936.00
+
+[samples.csv] shape = (566, 3)
+  Unique patients: 566
+  Sample type breakdown: {'Primary Solid Tumor': np.int64(566)}
